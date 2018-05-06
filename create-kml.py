@@ -1,3 +1,4 @@
+#!/bin/python
 
 class Coord:
     def __init__(self, lat, lon):
