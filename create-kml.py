@@ -13,10 +13,13 @@ def start_folder(kml, name):
 def end_folder(kml):
     kml.write('</Folder>')
 
-def pushpin(kml, name, coord):
+def pushpin(kml, name, coord, desc):
+    kml.write('<Placemark><name>{:s}</name>'.format(name))
+
+    if desc is not None:
+       kml.write('<description>{:s}</description>'.format(desc))
+
     kml.write("""
-			<Placemark>
-                                <name>{:s}</name>
 <!--   <LookAt>
 					<longitude>38.34803907965529</longitude>
 					<latitude>33.2540199398231</latitude>
@@ -31,7 +34,7 @@ def pushpin(kml, name, coord):
 					<gx:drawOrder>1</gx:drawOrder>
                                         <coordinates>{:f},{:f}</coordinates>
 				</Point>
-			</Placemark>""".format(name, coord.lon, coord.lat)
+			</Placemark>""".format(coord.lon, coord.lat)
     )
 
 
@@ -39,10 +42,11 @@ def pushpin(kml, name, coord):
 
 
 class Person:
-    def __init__(self, kml, lat, lon, name, father):
+    def __init__(self, kml, lat, lon, name, father, desc = None):
         self.coord=Coord(lat, lon)
         self.name=name
-        pushpin(kml, name, self.coord)
+#       self.desc=desc
+        pushpin(kml, name, self.coord, desc)
         if father:
            line(kml, father, self)
 
@@ -100,7 +104,7 @@ tiras  = Person(kml, 44    , 28    , 'Tiras'   , japhet)
 
 aschkenas = Person(kml, 46, 40, 'Aschkenas', gomer)
 riphat    = Person(kml, 41, 33, 'Riphat'   , gomer)
-togarma   = Person(kml, 38, 40, 'Togarma'  , gomer)
+togarma   = Person(kml, 38, 40, 'Togarma'  , gomer, desc = 'Das Haus Togarma im äussersten Norden, Hes 38:5')
 
 # elischa   = Person(kml, 41    , 15  , 'Elischa'  , jawan)
 elischa   = Person(kml, 34.884, 32.456, 'Elischa'  , jawan) # According to http://tribesofaboriginalnations.com/wp-content/uploads/sites/12/2015/08/table-of-nations1.jpg
